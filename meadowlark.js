@@ -15,6 +15,12 @@ app.set('port', process.env.PORT || 3000);
 //estáticos al cliente. Cuando se referencie un archivo de la carpeta será sin public/.
 app.use(express.static(__dirname + '/public'));
 
+//Habilita parámetro URL para iniciar test unitario (http://localhost:3000/?test=1).
+app.use(function(req, res, next){
+	res.locals.showTests = app.get('env') !== 'production' && req.query.test === '1';
+	next();
+});
+
 /*
 "app.get()" sirve para el routing, donde get() es un placeholder para la operación
 REST que se desee realizar. Por default no considera todos los querystrings. El status
