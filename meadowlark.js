@@ -1,4 +1,7 @@
 var express = require('express');
+//Pido módulo exportado. "./" pide que no se busque en node_modules.
+var fortune = require('./lib/fortune.js');
+
 var app = express();
 //Se especifica el layout para todas las views.
 var handlebars = require('express-handlebars').create({defaultLayout:'main'});
@@ -41,8 +44,7 @@ app.get('/', function(req, res) {
 	res.render('home');
 });
 app.get('/about', function(req, res) {
-	var randomFortune = fortunes[Math.floor(Math.random() * fortunes.length)];
-	res.render('about', {fortune: randomFortune});
+	res.render('about', {fortune: fortune.getFortune()});
 });
 
 /*
@@ -82,12 +84,3 @@ app.use(function(err, req, res, next){
 app.listen(app.get('port'), function(){
 	console.log('Express started on http://localhost:' + app.get('port') + '; press Ctrl+C to terminate.');
 });
-
-
-var fortunes = [
-	"Conquer your fears or they will conquer you.",
-	"Rivers need springs.",
-	"Do not fear what you don't know.",
-	"You will have a pleasant surprise.",
-	"Whenever possible, keep it simple.",
-];
