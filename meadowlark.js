@@ -15,7 +15,7 @@ app.set('port', process.env.PORT || 3000);
 //estáticos al cliente. Cuando se referencie un archivo de la carpeta será sin public/.
 app.use(express.static(__dirname + '/public'));
 
-//Habilita parámetro URL para iniciar test unitario (http://localhost:3000/?test=1).
+//Habilita parámetro URL para iniciar test unitario global (http://localhost:3000/?test=1).
 app.use(function(req, res, next){
 	res.locals.showTests = app.get('env') !== 'production' && req.query.test === '1';
 	next();
@@ -49,8 +49,12 @@ Para el catch handler sí hay que especificar el código de status.
 app.get('/', function(req, res) {
 	res.render('home');
 });
+//"pageTestScript" indica test específico de About.
 app.get('/about', function(req, res) {
-	res.render('about', {fortune: fortune.getFortune()});
+	res.render('about', {
+		fortune: fortune.getFortune(),
+		pageTestScript : '/qa/tests-about.js'
+	});
 });
 
 /*
